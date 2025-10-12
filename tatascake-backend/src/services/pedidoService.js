@@ -9,19 +9,34 @@ class PedidoService {
       cliente = await ClienteService.criar(pedidoData.cliente);
     }
     
+    let valorTotal = null;
+    if (pedidoData.itens.some(item => item.valorUnitario)) {
+      valorTotal = pedidoData.itens.reduce((total, item) => {
+        return total + (item.valorUnitario * item.quantidade);
+      }, 0);
+    }
+    
     const pedido = await prisma.pedido.create({
       data: {
         clienteId: cliente.id,
-        tipoProduto: pedidoData.produto.tipo,
-        personalizacao: pedidoData.produto.personalizacao || null,
         formaEntrega: pedidoData.cliente.formaEntrega,
         formaPagamento: pedidoData.cliente.formaPagamento,
         dataEntrega: pedidoData.cliente.dataEntrega ? new Date(pedidoData.cliente.dataEntrega) : null,
         observacoes: pedidoData.cliente.observacoes || null,
-        status: 'pendente'
+        valorTotal: valorTotal,
+        status: 'pendente',
+        itens: {
+          create: pedidoData.itens.map(item => ({
+            tipoProduto: item.tipoProduto,
+            quantidade: item.quantidade,
+            valorUnitario: item.valorUnitario || null,
+            personalizacao: item.personalizacao || null
+          }))
+        }
       },
       include: {
-        cliente: true
+        cliente: true,
+        itens: true
       }
     });
     
@@ -31,7 +46,8 @@ class PedidoService {
   static async listarPedidos() {
     return await prisma.pedido.findMany({
       include: {
-        cliente: true
+        cliente: true,
+        itens: true
       },
       orderBy: {
         criadoEm: 'desc'
@@ -43,7 +59,8 @@ class PedidoService {
     const pedido = await prisma.pedido.findUnique({
       where: { id: parseInt(id) },
       include: {
-        cliente: true
+        cliente: true,
+        itens: true
       }
     });
     
@@ -58,8 +75,6 @@ class PedidoService {
     const pedido = await prisma.pedido.update({
       where: { id: parseInt(id) },
       data: {
-        tipoProduto: pedidoData.tipoProduto,
-        personalizacao: pedidoData.personalizacao,
         formaEntrega: pedidoData.formaEntrega,
         formaPagamento: pedidoData.formaPagamento,
         dataEntrega: pedidoData.dataEntrega ? new Date(pedidoData.dataEntrega) : null,
@@ -67,7 +82,8 @@ class PedidoService {
         status: pedidoData.status
       },
       include: {
-        cliente: true
+        cliente: true,
+        itens: true
       }
     });
     
@@ -79,7 +95,8 @@ class PedidoService {
       where: { id: parseInt(id) },
       data: { status },
       include: {
-        cliente: true
+        cliente: true,
+        itens: true
       }
     });
     
@@ -90,61 +107,6 @@ class PedidoService {
     await prisma.pedido.delete({
       where: { id: parseInt(id) }
     });
-  }
-
-  static gerarMensagemWhatsApp(pedido) {
-    const cliente = pedido.cliente;
-    let mensagem = `🎂 *NOVO PEDIDO* 🎂\n\n`;
-    
-    mensagem += `📦 *PRODUTO*\n`;
-    mensagem += `Tipo: ${pedido.tipoProduto.toUpperCase()}\n\n`;
-    
-    if (pedido.tipoProduto === 'bolo' && pedido.personalizacao) {
-      const p = pedido.personalizacao;
-      mensagem += `🎨 *PERSONALIZAÇÃO DO BOLO*\n`;
-      mensagem += `Tamanho: ${p.tamanho}\n`;
-      mensagem += `Forma: ${p.forma}\n`;
-      mensagem += `Sabor da Massa: ${p.saborMassa}\n`;
-      if (p.corMassa) mensagem += `Cor da Massa: ${p.corMassa}\n`;
-      if (p.saborRecheio) mensagem += `Sabor do Recheio: ${p.saborRecheio}\n`;
-      if (p.quantidadeRecheio) mensagem += `Quantidade de Recheio: ${p.quantidadeRecheio}\n`;
-      if (p.tema) mensagem += `Tema: ${p.tema}\n`;
-      if (p.topo) mensagem += `Topo: ${p.topo}\n`;
-      if (p.gliter !== undefined) mensagem += `Gliter: ${p.gliter ? 'Sim' : 'Não'}\n`;
-      mensagem += `\n`;
-    }
-    
-    mensagem += `👤 *CLIENTE*\n`;
-    mensagem += `Nome: ${cliente.nomeCompleto}\n`;
-    mensagem += `Contato: ${cliente.contato}\n`;
-    if (cliente.endereco) mensagem += `Endereço: ${cliente.endereco}\n`;
-    if (cliente.dataAniversario) {
-      const data = new Date(cliente.dataAniversario).toLocaleDateString('pt-BR');
-      mensagem += `Data de Aniversário: ${data}\n`;
-    }
-    mensagem += `\n`;
-    
-    mensagem += `📍 *ENTREGA E PAGAMENTO*\n`;
-    mensagem += `Forma de Entrega: ${pedido.formaEntrega}\n`;
-    mensagem += `Forma de Pagamento: ${pedido.formaPagamento}\n`;
-    if (pedido.dataEntrega) {
-      const data = new Date(pedido.dataEntrega).toLocaleDateString('pt-BR');
-      mensagem += `Data de Entrega: ${data}\n`;
-    }
-    mensagem += `\n`;
-    
-    if (pedido.observacoes) {
-      mensagem += `📝 *OBSERVAÇÕES*\n${pedido.observacoes}\n\n`;
-    }
-    
-    mensagem += `🆔 Pedido #${pedido.id}`;
-    
-    return encodeURIComponent(mensagem);
-  }
-
-  static gerarLinkWhatsApp(pedido, numeroWhatsApp) {
-    const mensagem = this.gerarMensagemWhatsApp(pedido);
-    return `https://wa.me/${numeroWhatsApp}?text=${mensagem}`;
   }
 }
 

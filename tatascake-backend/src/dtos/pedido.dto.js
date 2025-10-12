@@ -2,34 +2,55 @@ import Validator from '../utils/validators.js';
 
 class CriarPedidoDTO {
   constructor(data) {
-    this.produto = new ProdutoDTO(data.produto);
+    this.itens = data.itens?.map(item => new ItemPedidoDTO(item)) || [];
     this.cliente = new ClientePedidoDTO(data.cliente);
   }
 
   validate() {
     const errors = [];
-    errors.push(...this.produto.validate());
-    errors.push(...this.cliente.validate());
+
+    if (!this.itens || this.itens.length === 0) {
+      errors.push('Pedido deve ter pelo menos 1 item');
+    } else {
+      this.itens.forEach((item, index) => {
+        const itemErrors = item.validate();
+        if (itemErrors.length > 0) {
+          errors.push(`Item ${index + 1}: ${itemErrors.join(', ')}`);
+        }
+      });
+    }
+
+    const clienteErrors = this.cliente.validate();
+    if (clienteErrors.length > 0) {
+      errors.push(...clienteErrors);
+    }
+
     return errors;
   }
 }
 
-class ProdutoDTO {
+class ItemPedidoDTO {
   constructor(data) {
-    this.tipo = data?.tipo;
+    this.tipoProduto = data?.tipoProduto;
+    this.quantidade = data?.quantidade || 1;
+    this.valorUnitario = data?.valorUnitario;
     this.personalizacao = data?.personalizacao;
   }
 
   validate() {
     const errors = [];
 
-    const tipoError = Validator.required(this.tipo, 'Tipo de produto');
+    const tipoError = Validator.required(this.tipoProduto, 'Tipo de produto');
     if (tipoError) errors.push(tipoError);
 
-    const tipoInError = Validator.isIn(this.tipo, ['bolo', 'docinho'], 'Tipo de produto');
+    const tipoInError = Validator.isIn(this.tipoProduto, ['bolo', 'docinho'], 'Tipo de produto');
     if (tipoInError) errors.push(tipoInError);
 
-    if (this.tipo === 'bolo') {
+    if (this.quantidade < 1) {
+      errors.push('Quantidade deve ser no mínimo 1');
+    }
+
+    if (this.tipoProduto === 'bolo') {
       if (!this.personalizacao) {
         errors.push('Personalização do bolo é obrigatória');
       } else {
@@ -43,6 +64,12 @@ class ProdutoDTO {
 
         const saborError = Validator.required(p.saborMassa, 'Sabor da massa');
         if (saborError) errors.push(saborError);
+      }
+    }
+
+    if (this.tipoProduto === 'docinho') {
+      if (!this.personalizacao?.quantidadeDocinhos) {
+        errors.push('Quantidade de docinhos é obrigatória');
       }
     }
 
@@ -94,14 +121,23 @@ class PedidoResponseDTO {
   constructor(pedido) {
     this.id = pedido.id;
     this.status = pedido.status;
-    this.tipoProduto = pedido.tipoProduto;
-    this.personalizacao = pedido.personalizacao;
     this.formaEntrega = pedido.formaEntrega;
     this.formaPagamento = pedido.formaPagamento;
     this.dataEntrega = pedido.dataEntrega;
     this.observacoes = pedido.observacoes;
+    this.valorTotal = pedido.valorTotal;
     this.criadoEm = pedido.criadoEm;
     this.atualizadoEm = pedido.atualizadoEm;
+    
+    if (pedido.itens) {
+      this.itens = pedido.itens.map(item => ({
+        id: item.id,
+        tipoProduto: item.tipoProduto,
+        quantidade: item.quantidade,
+        valorUnitario: item.valorUnitario,
+        personalizacao: item.personalizacao
+      }));
+    }
     
     if (pedido.cliente) {
       this.cliente = {
@@ -123,7 +159,7 @@ class ListarPedidosResponseDTO {
 
 export {
   CriarPedidoDTO,
-  ProdutoDTO,
+  ItemPedidoDTO,
   ClientePedidoDTO,
   PedidoResponseDTO,
   ListarPedidosResponseDTO

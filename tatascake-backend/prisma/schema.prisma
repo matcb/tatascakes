@@ -11,34 +11,53 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-model cliente {
-  id              Int      @id @default(autoincrement())
+model Cliente {
+  id              Int       @id @default(autoincrement())
   nomeCompleto    String
   contato         String
-  endereco        String
-  dataAniversario DateTime
-  createdAt       DateTime @default(now())
-  pedidos         pedido[]
-
+  endereco        String?
+  dataAniversario DateTime?
+  criadoEm        DateTime  @default(now())
+  atualizadoEm    DateTime  @updatedAt
+  
+  pedidos         Pedido[]
+  
   @@map("clientes")
 }
 
-model pedido {
-  id          Int     @id @default(autoincrement())
-  clienteId   Int
-  cliente     cliente @relation(fields: [clienteId], references: [id])
-  tipoProduto String
-
-  personalizacao Json?
-
+model Pedido {
+  id             Int       @id @default(autoincrement())
+  clienteId      Int
+  cliente        Cliente   @relation(fields: [clienteId], references: [id])
+  
   formaEntrega   String
   formaPagamento String
   dataEntrega    DateTime?
   observacoes    String?
-
-  status       String   @default("pendente")
-  criadoEm     DateTime @default(now())
-  atualizadoEm DateTime @updatedAt
-
+  
+  itens          ItemPedido[]
+  
+  status         String    @default("pendente")
+  valorTotal     Decimal?  @db.Decimal(10, 2)
+  criadoEm       DateTime  @default(now())
+  atualizadoEm   DateTime  @updatedAt
+  
   @@map("pedidos")
+}
+
+model ItemPedido {
+  id             Int      @id @default(autoincrement())
+  pedidoId       Int
+  pedido         Pedido   @relation(fields: [pedidoId], references: [id], onDelete: Cascade)
+  
+  tipoProduto    String   
+  quantidade     Int      @default(1)
+  valorUnitario  Decimal? @db.Decimal(10, 2)
+  
+  personalizacao Json?
+  
+  criadoEm       DateTime @default(now())
+  atualizadoEm   DateTime @updatedAt
+  
+  @@map("itens_pedido")
 }
