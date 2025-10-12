@@ -1,4 +1,5 @@
 import PedidoService from '../services/pedidoService.js';
+import WhatsAppService from '../services/whatsappService.js';
 import { 
   PedidoResponseDTO, 
   ListarPedidosResponseDTO 
@@ -10,7 +11,7 @@ class PedidoController {
       const pedido = await PedidoService.criarPedido(req.validatedData);
       
       const numeroWhatsApp = process.env.WHATSAPP_NUMERO || '5521999999999';
-      const linkWhatsApp = PedidoService.gerarLinkWhatsApp(pedido, numeroWhatsApp);
+      const whatsappLink = WhatsAppService.gerarLink(pedido, numeroWhatsApp);
       
       const response = new PedidoResponseDTO(pedido);
       
@@ -18,7 +19,7 @@ class PedidoController {
         success: true,
         message: 'Pedido criado com sucesso!',
         data: response,
-        whatsappLink: linkWhatsApp
+        whatsappLink: whatsappLink
       });
     } catch (error) {
       next(error);
@@ -115,6 +116,22 @@ class PedidoController {
         success: true,
         message: 'Status atualizado com sucesso!',
         data: response
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async gerarLinkWhatsApp(req, res, next) {
+    try {
+      const pedido = await PedidoService.buscarPedido(req.params.id);
+      const numeroWhatsApp = process.env.WHATSAPP_NUMERO || '5521999999999';
+      
+      const whatsappLink = WhatsAppService.gerarLink(pedido, numeroWhatsApp);
+      
+      res.json({
+        success: true,
+        whatsappLink: whatsappLink
       });
     } catch (error) {
       next(error);

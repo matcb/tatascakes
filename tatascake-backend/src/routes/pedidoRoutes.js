@@ -8,6 +8,7 @@ const router = express.Router();
 router.post('/', validateDTO(CriarPedidoDTO), PedidoController.criar);
 router.get('/', PedidoController.listar);
 router.get('/:id', PedidoController.buscar);
+router.get('/:id/whatsapp', PedidoController.gerarLinkWhatsApp);
 router.put('/:id', PedidoController.atualizar);
 router.patch('/:id/status', PedidoController.atualizarStatus);
 router.delete('/:id', PedidoController.deletar);
