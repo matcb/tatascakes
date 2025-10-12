@@ -2,24 +2,22 @@ import prisma from "../config/database.js";
 import ClienteService from './clienteService.js';
 
 class PedidoService {
-  static async criarPedido(dados) {
-    this.validarPedido(dados);
-    
-    let cliente = await ClienteService.buscarPorContato(dados.cliente.contato);
+  static async criarPedido(pedidoData) {
+    let cliente = await ClienteService.buscarPorContato(pedidoData.cliente.contato);
     
     if (!cliente) {
-      cliente = await ClienteService.criar(dados.cliente);
+      cliente = await ClienteService.criar(pedidoData.cliente);
     }
     
     const pedido = await prisma.pedido.create({
       data: {
         clienteId: cliente.id,
-        tipoProduto: dados.produto.tipo,
-        personalizacao: dados.produto.personalizacao || null,
-        formaEntrega: dados.cliente.formaEntrega,
-        formaPagamento: dados.cliente.formaPagamento,
-        dataEntrega: dados.cliente.dataEntrega ? new Date(dados.cliente.dataEntrega) : null,
-        observacoes: dados.cliente.observacoes || null,
+        tipoProduto: pedidoData.produto.tipo,
+        personalizacao: pedidoData.produto.personalizacao || null,
+        formaEntrega: pedidoData.cliente.formaEntrega,
+        formaPagamento: pedidoData.cliente.formaPagamento,
+        dataEntrega: pedidoData.cliente.dataEntrega ? new Date(pedidoData.cliente.dataEntrega) : null,
+        observacoes: pedidoData.cliente.observacoes || null,
         status: 'pendente'
       },
       include: {
@@ -56,17 +54,17 @@ class PedidoService {
     return pedido;
   }
 
-  static async atualizarPedido(id, dados) {
+  static async atualizarPedido(id, pedidoData) {
     const pedido = await prisma.pedido.update({
       where: { id: parseInt(id) },
       data: {
-        tipoProduto: dados.tipoProduto,
-        personalizacao: dados.personalizacao,
-        formaEntrega: dados.formaEntrega,
-        formaPagamento: dados.formaPagamento,
-        dataEntrega: dados.dataEntrega ? new Date(dados.dataEntrega) : null,
-        observacoes: dados.observacoes,
-        status: dados.status
+        tipoProduto: pedidoData.tipoProduto,
+        personalizacao: pedidoData.personalizacao,
+        formaEntrega: pedidoData.formaEntrega,
+        formaPagamento: pedidoData.formaPagamento,
+        dataEntrega: pedidoData.dataEntrega ? new Date(pedidoData.dataEntrega) : null,
+        observacoes: pedidoData.observacoes,
+        status: pedidoData.status
       },
       include: {
         cliente: true
@@ -92,34 +90,6 @@ class PedidoService {
     await prisma.pedido.delete({
       where: { id: parseInt(id) }
     });
-    
-    return { message: 'Pedido deletado com sucesso' };
-  }
-
-  static validarPedido(dados) {
-    const { produto, cliente } = dados;
-
-    if (!produto || !produto.tipo) {
-      throw new Error('Tipo de produto é obrigatório');
-    }
-
-    if (produto.tipo === 'bolo') {
-      if (!produto.personalizacao) {
-        throw new Error('Personalização do bolo é obrigatória');
-      }
-      const p = produto.personalizacao;
-      if (!p.tamanho || !p.forma || !p.saborMassa) {
-        throw new Error('Tamanho, forma e sabor da massa são obrigatórios');
-      }
-    }
-
-    if (!cliente || !cliente.nomeCompleto || !cliente.contato) {
-      throw new Error('Nome completo e contato são obrigatórios');
-    }
-
-    if (!cliente.formaEntrega || !cliente.formaPagamento) {
-      throw new Error('Forma de entrega e pagamento são obrigatórias');
-    }
   }
 
   static gerarMensagemWhatsApp(pedido) {

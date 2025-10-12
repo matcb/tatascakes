@@ -1,15 +1,13 @@
-import prisma from "../config/database.js";
+import prisma from '../config/database.js';
 
 class ClienteService {
-  static async criar(dados) {
-    this.validarCliente(dados);
-    
+  static async criar(clienteData) {
     const cliente = await prisma.cliente.create({
       data: {
-        nomeCompleto: dados.nomeCompleto,
-        contato: dados.contato,
-        endereco: dados.endereco,
-        dataAniversario: dados.dataAniversario ? new Date(dados.dataAniversario) : null
+        nomeCompleto: clienteData.nomeCompleto,
+        contato: clienteData.contato,
+        endereco: clienteData.endereco,
+        dataAniversario: clienteData.dataAniversario ? new Date(clienteData.dataAniversario) : null
       }
     });
     
@@ -47,40 +45,51 @@ class ClienteService {
   }
 
   static async buscarPorContato(contato) {
+    const contatoLimpo = contato.replace(/\D/g, '');
+    
     return await prisma.cliente.findFirst({
-      where: { contato },
+      where: { contato: contatoLimpo },
       include: {
         pedidos: true
       }
     });
   }
 
-  static async atualizar(id, dados) {
+  static async atualizar(id, clienteData) {
+    const dataToUpdate = {};
+    
+    if (clienteData.nomeCompleto !== undefined) dataToUpdate.nomeCompleto = clienteData.nomeCompleto;
+    if (clienteData.contato !== undefined) dataToUpdate.contato = clienteData.contato;
+    if (clienteData.endereco !== undefined) dataToUpdate.endereco = clienteData.endereco;
+    if (clienteData.dataAniversario !== undefined) {
+      dataToUpdate.dataAniversario = clienteData.dataAniversario ? new Date(clienteData.dataAniversario) : null;
+    }
+
     const cliente = await prisma.cliente.update({
       where: { id: parseInt(id) },
-      data: {
-        nomeCompleto: dados.nomeCompleto,
-        contato: dados.contato,
-        endereco: dados.endereco,
-        dataAniversario: dados.dataAniversario ? new Date(dados.dataAniversario) : null
-      }
+      data: dataToUpdate
     });
     
     return cliente;
   }
 
   static async deletar(id) {
+    const cliente = await prisma.cliente.findUnique({
+      where: { id: parseInt(id) },
+      include: { pedidos: true }
+    });
+
+    if (!cliente) {
+      throw new Error('Cliente não encontrado');
+    }
+
+    if (cliente.pedidos.length > 0) {
+      throw new Error('Não é possível deletar cliente com pedidos. Delete os pedidos primeiro.');
+    }
+
     await prisma.cliente.delete({
       where: { id: parseInt(id) }
     });
-    
-    return { message: 'Cliente deletado com sucesso' };
-  }
-
-  static validarCliente(dados) {
-    if (!dados.nomeCompleto || !dados.contato) {
-      throw new Error('Nome completo e contato são obrigatórios');
-    }
   }
 }
 

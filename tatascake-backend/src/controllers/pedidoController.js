@@ -1,17 +1,23 @@
 import PedidoService from '../services/pedidoService.js';
+import { 
+  PedidoResponseDTO, 
+  ListarPedidosResponseDTO 
+} from '../dtos/pedido.dto.js';
 
 class PedidoController {
   static async criar(req, res, next) {
     try {
-      const pedido = await PedidoService.criarPedido(req.body);
+      const pedido = await PedidoService.criarPedido(req.validatedData);
       
-      const numeroWhatsApp = process.env.WHATSAPP_NUMERO;
+      const numeroWhatsApp = process.env.WHATSAPP_NUMERO || '5521999999999';
       const linkWhatsApp = PedidoService.gerarLinkWhatsApp(pedido, numeroWhatsApp);
+      
+      const response = new PedidoResponseDTO(pedido);
       
       res.status(201).json({
         success: true,
         message: 'Pedido criado com sucesso!',
-        pedido,
+        data: response,
         whatsappLink: linkWhatsApp
       });
     } catch (error) {
@@ -22,10 +28,11 @@ class PedidoController {
   static async listar(req, res, next) {
     try {
       const pedidos = await PedidoService.listarPedidos();
+      const response = new ListarPedidosResponseDTO(pedidos);
+      
       res.json({
         success: true,
-        quantidade: pedidos.length,
-        pedidos
+        data: response
       });
     } catch (error) {
       next(error);
@@ -35,9 +42,11 @@ class PedidoController {
   static async buscar(req, res, next) {
     try {
       const pedido = await PedidoService.buscarPedido(req.params.id);
+      const response = new PedidoResponseDTO(pedido);
+      
       res.json({
         success: true,
-        pedido
+        data: response
       });
     } catch (error) {
       next(error);
@@ -47,10 +56,12 @@ class PedidoController {
   static async atualizar(req, res, next) {
     try {
       const pedido = await PedidoService.atualizarPedido(req.params.id, req.body);
+      const response = new PedidoResponseDTO(pedido);
+      
       res.json({
         success: true,
         message: 'Pedido atualizado com sucesso!',
-        pedido
+        data: response
       });
     } catch (error) {
       next(error);
@@ -59,10 +70,11 @@ class PedidoController {
 
   static async deletar(req, res, next) {
     try {
-      const resultado = await PedidoService.deletarPedido(req.params.id);
+      await PedidoService.deletarPedido(req.params.id);
+      
       res.json({
         success: true,
-        ...resultado
+        message: 'Pedido deletado com sucesso!'
       });
     } catch (error) {
       next(error);
@@ -72,11 +84,37 @@ class PedidoController {
   static async atualizarStatus(req, res, next) {
     try {
       const { status } = req.body;
+      
+      if (!status) {
+        return res.status(400).json({
+          success: false,
+          message: 'Status é obrigatório'
+        });
+      }
+
+      const statusValidos = [
+        'pendente', 
+        'confirmado', 
+        'em_producao', 
+        'pronto', 
+        'entregue', 
+        'cancelado'
+      ];
+
+      if (!statusValidos.includes(status)) {
+        return res.status(400).json({
+          success: false,
+          message: `Status inválido. Use um dos seguintes: ${statusValidos.join(', ')}`
+        });
+      }
+
       const pedido = await PedidoService.atualizarStatus(req.params.id, status);
+      const response = new PedidoResponseDTO(pedido);
+      
       res.json({
         success: true,
         message: 'Status atualizado com sucesso!',
-        pedido
+        data: response
       });
     } catch (error) {
       next(error);
