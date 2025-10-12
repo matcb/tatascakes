@@ -1,0 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Great+Vibes&display=swap');
+@import "tailwindcss";
+
+@theme{
+    /* Colors for Lables */
+    --color-softpink-bg: #fae8eb;
+    --color-red-font:#CB102B;
+    /* Color for Input Borders*/
+    --color-red-border:#CB102B;
+    /* Custom Fonts*/
+    --font-logo: "Abril Fatface", serif;
+    --font-accent: "Great Vibes", cursive;
+    /* Border Radius Inputs*/
+    --radius-custom:100px;
+
+}
