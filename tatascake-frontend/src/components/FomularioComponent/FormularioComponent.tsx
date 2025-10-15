@@ -1,8 +1,8 @@
-import { Button } from "../../components/ui/button"
-import { Field, FieldGroup, FieldSet, FieldLabel} from "../../components/ui/field"
-import { Input } from "../../components/ui/input"
-import logo from "../../assets/logo_tatas_cake.svg"
-import {Dropdown} from "../../components/dropdown"
+import { Button } from "../../components/ui/button";
+import { Field, FieldGroup, FieldSet, FieldLabel } from "../../components/ui/field";
+import { Input } from "../../components/ui/input";
+import logo from "../../assets/logo_tatas_cake.svg";
+import { Dropdown } from "../DropdownComponent/DropDownComponent";
 
 
 
@@ -23,27 +23,14 @@ export const FormularioBolo = () => {
                     <FieldGroup className="flex flex-col flex-auto flex-wrap">
                         
                         <Field className="flex-auto flex-col">
-                            <FieldLabel  className=" font-logo text-red-font justify-center " htmlFor="sabor">Sabor - Massas Comuns</FieldLabel> 
+                            <FieldLabel  className=" font-logo text-red-font justify-center " htmlFor="sabor">Sabor - Massas </FieldLabel> 
                             <Dropdown
                                 options={[
                                     "Chocolate",
                                     "Baunilha",
                                     "Red Velvet",
-                                    "Amanteigada"
-                                ]}
-                                placeholder="Escolha um Sabor"
-                                onSelect={(option) => {
-                                    console.log("Selected sabor:", option);
-                                }}
-                            />
-
-                        </Field>
-
-                          <Field className="flex-auto flex-col">
-                            <FieldLabel  className=" font-logo text-red-font justify-center " htmlFor="sabor">Sabor - Massas Gourmet</FieldLabel> 
-                            <Dropdown
-                                options={[
-                                    "Capuccino",
+                                    "Amanteigada",
+                                     "Capuccino",
                                     "Red Velvet",
                                     "Massa sabor Banoffee"
                                 ]}
@@ -54,6 +41,7 @@ export const FormularioBolo = () => {
                             />
 
                         </Field>
+
 
                         <Field className="flex-auto flex-col">
                             <FieldLabel className=" font-logo text-red-font justify-center" htmlFor="tamanho">Tamanho do Bolo</FieldLabel>
@@ -75,12 +63,26 @@ export const FormularioBolo = () => {
 
                         
                         <Field className="flex-auto flex-col">
+                            <FieldLabel className="font-logo text-red-font justify-center" htmlFor="tema">Topper</FieldLabel>
+                             <Dropdown
+                                options={[
+                                    "Não",
+                                    "Sim"
+                                ]}
+                                placeholder="Escolha o tamanho do bolo"
+                                onSelect={(option) => {
+                                    console.log("Selected topper:", option);
+                                }}
+                            />
+                        </Field>
+                        
+                        <Field className="flex-auto flex-col">
                             <FieldLabel className="font-logo text-red-font justify-center" htmlFor="tema">Tema</FieldLabel>
                             <Input className="border-red-border border-2 hover:border-red-200 rounded-[15px]" id="formato_bolo" placeholder="Escolha o tema" autoComplete="off" required />
                         </Field>
 
                         <Field className="flex-auto flex-col">
-                            <FieldLabel className=" font-logo text-red-font justify-center" htmlFor="tamanho">Sabor - Recheio Comum</FieldLabel>
+                            <FieldLabel className=" font-logo text-red-font justify-center" htmlFor="tamanho">Sabor - Recheio</FieldLabel>
                              <Dropdown
                                 options={[
                                     "Brigadeiro ",
@@ -94,25 +96,11 @@ export const FormularioBolo = () => {
                                     "Ninho",
                                     "4 leites",
                                     "Café",
-                                    "Oreo"
-                                ]}
-                                placeholder="Sabor do Recheio"
-                                onSelect={(option) => {
-                                    console.log("Selected sabor:", option);
-                                }}
-                            />
-                        </Field>
-
-                        <Field className="flex-auto flex-col">
-                            <FieldLabel className=" font-logo text-red-font justify-center" htmlFor="tamanho">Sabor - Recheio Gourmet </FieldLabel>
-                             <Dropdown
-                                options={[
+                                    "Oreo",
                                     "Ninho Trufado",
                                     "sonho de valsa",
                                     "Café",
                                     "Oreo"
-                                    
-
                                 ]}
                                 placeholder="Sabor do Recheio"
                                 onSelect={(option) => {
@@ -120,7 +108,6 @@ export const FormularioBolo = () => {
                                 }}
                             />
                         </Field>
-
 
                         <Field>
                             <FieldLabel className="font-logo text-red-font justify-center" htmlFor="formato">Formato do Bolo </FieldLabel>
