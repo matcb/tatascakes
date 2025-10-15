@@ -3,6 +3,7 @@ import { Field, FieldGroup, FieldSet, FieldLabel } from "../../components/ui/fie
 import { Input } from "../../components/ui/input";
 import logo from "../../assets/logo_tatas_cake.svg";
 import { Dropdown } from "../DropdownComponent/DropDownComponent";
+import { Link } from "react-router-dom";
 
 
 
@@ -13,8 +14,11 @@ export const FormularioBolo = () => {
             <div className="bg-softpink-bg grid place-items-center min-h-screen p-4">
                 
                     <div className="flex flex-col items-center ">
-                        <img src={logo} alt="Logo" className="w-75 h-75 " />
-                        <p className="font-accent text-red-font -mt-8 sm:-mt-12 md:-mt-16 lg:-mt-20 text-[1.2rem]">Confeitaria Artesanal - by R.Cakes </p>
+                        <Link to="/">
+                            <img src={logo} alt="Logo" className="w-75 h-75 " />
+                            <p className="font-accent text-red-font -mt-8 sm:-mt-12 md:-mt-16 lg:-mt-20 text-[1.2rem] text-center">Confeitaria Artesanal - by R.Cakes </p>
+                        </Link>
+                        
                     </div>
                     
 
