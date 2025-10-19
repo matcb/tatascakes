@@ -1,7 +1,7 @@
 
 export default function AboutComponent () {
     return (
-        <main className="min-h-screen bg-gradient-to-br from-softpink-bg/60 via-softpink-bg/30 to-red-font/10">
+        <main id="about" className="min-h-screen bg-gradient-to-br from-softpink-bg/60 via-softpink-bg/30 to-red-font/10">
             <div className="relative">
                 <div className="pt-15">
                     <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-2xl text-red-font font-heading font-bold text-center mb-4 px-4 leading-tight">
