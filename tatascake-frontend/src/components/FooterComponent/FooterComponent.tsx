@@ -5,7 +5,7 @@ const FooterComponent = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="w-full bg-softpink-bg mt-auto shadow-lg shadow-red-font/10 backdrop-blur-sm">
+    <footer className="w-full bg-softpink-bg mt-auto shadow-lg shadow-red-font/10 backdrop-blur-sm ">
       <div className="container mx-auto px-4 py-4 md:py-6 lg:py-8">
         <div className="flex flex-col items-center gap-3 md:gap-4 text-center">
           {/* Instagram Link */}

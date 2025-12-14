@@ -51,7 +51,7 @@ const NavigationComponent = () => {
                         <motion.button
                             key={section.id}
                             onClick={() => scrollToSection(section.id)}
-                            className={`relative p-3 rounded-full transition-all duration-300 ${
+                            className={`relative p-3 rounded-full cursor-pointer transition-all duration-300 ${
                                 activeSection === section.id
                                     ? 'bg-red-font text-white'
                                     : 'bg-white/50 text-red-font hover:bg-red-font/10'

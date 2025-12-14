@@ -10,7 +10,7 @@ const ContactComponent = () => {
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
         >
-            <div className="max-w-4xl mx-auto w-full">
+            <div className="max-w-4xl mt-22 w-full">
                 {/* Header */}
                 <motion.div 
                     className="text-center mb-12"
