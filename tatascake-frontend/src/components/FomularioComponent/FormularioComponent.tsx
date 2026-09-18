@@ -5,18 +5,29 @@ import { Input } from "../../components/ui/input";
 import logo from "../../assets/logo_tatas_cake.svg";
 import { Dropdown } from "../DropdownComponent/DropDownComponent";
 import { Link } from "react-router-dom";
+import { criarPedido, ApiError } from "../../services/api";
 
 export const FormularioBolo = () => {
-  const [sMassa, setSaborMassa] = useState<string>("");
-  const [sRecheio, setSaborRecheio] = useState<string>("");
-  const [tamanho, setTamanho] = useState<string>("");
-  const [topper, setTopper] = useState<string>("Não"); // valor padrão
-  const [formato, setFormato] = useState<string>("");
-  const [tema, setTema] = useState<string>("");
-  const [erro, setErro] = useState<string>("");
+  const [sMassa, setSaborMassa] = useState("");
+  const [sRecheio, setSaborRecheio] = useState("");
+  const [tamanho, setTamanho] = useState("");
+  const [topper, setTopper] = useState("Não");
+  const [formato, setFormato] = useState("");
+  const [tema, setTema] = useState("");
 
-  const handleSubmit = () => {
-    setErro(""); // limpa erro anterior
+  const [nomeCompleto, setNomeCompleto] = useState("");
+  const [contato, setContato] = useState("");
+  const [endereco, setEndereco] = useState("");
+  const [formaEntrega, setFormaEntrega] = useState("");
+  const [formaPagamento, setFormaPagamento] = useState("");
+  const [dataEntrega, setDataEntrega] = useState("");
+  const [observacoes, setObservacoes] = useState("");
+
+  const [erro, setErro] = useState("");
+  const [enviando, setEnviando] = useState(false);
+
+  const handleSubmit = async () => {
+    setErro("");
 
     const verifica = (valor: string, nome: string) =>
       !valor || valor.trim() === "" ? nome : null;
@@ -27,47 +38,74 @@ export const FormularioBolo = () => {
       verifica(tamanho, "Tamanho do Bolo"),
       verifica(formato, "Formato do Bolo"),
       verifica(tema, "Tema do Bolo"),
+      verifica(nomeCompleto, "Nome Completo"),
+      verifica(contato, "Contato (WhatsApp)"),
+      verifica(endereco, "Endereço"),
+      verifica(formaEntrega, "Forma de Entrega"),
+      verifica(formaPagamento, "Forma de Pagamento"),
+      verifica(dataEntrega, "Data de Entrega"),
     ].filter(Boolean) as string[];
 
     if (faltando.length > 0) {
-      alert(`Por favor, preencha os campos: ${faltando.join(", ")}`);
+      setErro(`Por favor, preencha os campos: ${faltando.join(", ")}`);
       return;
     }
 
-    // Tudo preenchido → monta o payload
-    const payLoad = {
-      sMassa,
-      sRecheio,
-      tamanho,
-      topper,
-      formato,
-      tema: tema.trim(),
-    };
+    setEnviando(true);
 
-    console.log("Pedido recebido! 🎂", payLoad);
+    try {
+      const response = await criarPedido({
+        itens: [
+          {
+            tipoProduto: "bolo",
+            quantidade: 1,
+            personalizacao: {
+              saborMassa: sMassa,
+              saborRecheio: sRecheio,
+              tamanho,
+              forma: formato,
+              topper,
+              tema: tema.trim(),
+            },
+          },
+        ],
+        cliente: {
+          nomeCompleto: nomeCompleto.trim(),
+          contato: contato.trim(),
+          endereco: endereco.trim(),
+          formaEntrega: formaEntrega as "retirada" | "entrega",
+          formaPagamento: formaPagamento as "pix" | "dinheiro" | "cartao_credito" | "cartao_debito",
+          dataEntrega,
+          observacoes: observacoes.trim() || undefined,
+        },
+      });
 
-    // Mensagem de sucesso
-    alert("Pedido enviado com sucesso! Entraremos em contato em breve para confirmar. Obrigada! 💕");
+      window.open(response.whatsappLink, "_blank");
 
-    // Opcional: enviar pro WhatsApp (descomente se quiser)
-    /*
-    const mensagem = `
-*Novo Pedido de Bolo* 🎂
+      setSaborMassa("");
+      setSaborRecheio("");
+      setTamanho("");
+      setTopper("Não");
+      setFormato("");
+      setTema("");
+      setNomeCompleto("");
+      setContato("");
+      setEndereco("");
+      setFormaEntrega("");
+      setFormaPagamento("");
+      setDataEntrega("");
+      setObservacoes("");
 
-*Sabor da Massa:* ${payLoad.sMassa}
-*Sabor do Recheio:* ${payLoad.sRecheio}
-*Tamanho:* ${payLoad.tamanho}
-*Formato:* ${payLoad.formato}
-*Topper:* ${payLoad.topper}
-*Tema:* ${payLoad.tema}
-    `.trim();
-
-    const whatsappUrl = `https://wa.me/5511999999999?text=${encodeURIComponent(mensagem)}`;
-    window.open(whatsappUrl, "_blank");
-    */
-
-    // Limpar formulário (opcional)
-    // setSaborMassa(""); etc...
+      alert("Pedido enviado com sucesso! Abrindo WhatsApp...");
+    } catch (err) {
+      if (err instanceof ApiError) {
+        setErro(err.message);
+      } else {
+        setErro("Erro ao enviar pedido. Tente novamente.");
+      }
+    } finally {
+      setEnviando(false);
+    }
   };
 
   return (
@@ -83,7 +121,6 @@ export const FormularioBolo = () => {
         </div>
 
         <FieldSet className="w-full max-w-md">
-          {/* Mensagem de erro */}
           {erro && (
             <div className="mb-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg text-center font-medium">
               {erro}
@@ -187,12 +224,101 @@ export const FormularioBolo = () => {
               />
             </Field>
 
+            <div className="border-t-2 border-red-border/30 pt-6 mt-6">
+              <p className="font-logo text-red-font text-center text-lg mb-4">
+                Dados do Pedido
+              </p>
+            </div>
+
+            <Field>
+              <FieldLabel className="font-logo text-red-font text-center">
+                Nome Completo
+              </FieldLabel>
+              <Input
+                className="border-red-border border-2 hover:border-red-200 rounded-[15px]"
+                placeholder="Seu nome completo"
+                value={nomeCompleto}
+                onChange={(e) => setNomeCompleto(e.target.value)}
+              />
+            </Field>
+
+            <Field>
+              <FieldLabel className="font-logo text-red-font text-center">
+                Contato (WhatsApp)
+              </FieldLabel>
+              <Input
+                className="border-red-border border-2 hover:border-red-200 rounded-[15px]"
+                placeholder="Ex: 11999999999"
+                value={contato}
+                onChange={(e) => setContato(e.target.value)}
+              />
+            </Field>
+
+            <Field>
+              <FieldLabel className="font-logo text-red-font text-center">
+                Endereço
+              </FieldLabel>
+              <Input
+                className="border-red-border border-2 hover:border-red-200 rounded-[15px]"
+                placeholder="Rua, número, bairro..."
+                value={endereco}
+                onChange={(e) => setEndereco(e.target.value)}
+              />
+            </Field>
+
+            <Field>
+              <FieldLabel className="font-logo text-red-font text-center">
+                Forma de Entrega
+              </FieldLabel>
+              <Dropdown
+                options={["Retirada", "Entrega"]}
+                placeholder="Escolha a forma de entrega"
+                onSelect={setFormaEntrega}
+              />
+            </Field>
+
+            <Field>
+              <FieldLabel className="font-logo text-red-font text-center">
+                Forma de Pagamento
+              </FieldLabel>
+              <Dropdown
+                options={["Pix", "Dinheiro", "Cartão de Crédito", "Cartão de Débito"]}
+                placeholder="Escolha a forma de pagamento"
+                onSelect={setFormaPagamento}
+              />
+            </Field>
+
+            <Field>
+              <FieldLabel className="font-logo text-red-font text-center">
+                Data de Entrega
+              </FieldLabel>
+              <Input
+                type="date"
+                className="border-red-border border-2 hover:border-red-200 rounded-[15px]"
+                value={dataEntrega}
+                onChange={(e) => setDataEntrega(e.target.value)}
+              />
+            </Field>
+
+            <Field>
+              <FieldLabel className="font-logo text-red-font text-center">
+                Observações (opcional)
+              </FieldLabel>
+              <Input
+                className="border-red-border border-2 hover:border-red-200 rounded-[15px]"
+                placeholder="Alguma observação adicional..."
+                value={observacoes}
+                onChange={(e) => setObservacoes(e.target.value)}
+              />
+            </Field>
+
             <Button
               onClick={handleSubmit}
+              disabled={enviando}
               className="w-full font-logo text-red-font hover:bg-red-50 border-2 py-6 text-lg rounded-[15px]"
               variant="outline"
             >
-              Enviar Pedido
+              {enviando ? "Enviando..." : "Enviar Pedido"}
             </Button>
           </FieldGroup>
         </FieldSet>
