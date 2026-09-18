@@ -9,7 +9,8 @@ node_modules/
 
 # Prisma
 /src/generated/prisma
-prisma/migrations/**/migration.sql
+# Prisma
+/src/generated/prisma
 
 # Database
 *.db
