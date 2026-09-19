@@ -54,6 +54,17 @@ export const FormularioBolo = () => {
     setEnviando(true);
 
     try {
+      const formaEntregaMap: Record<string, string> = {
+        "Retirada": "retirada",
+        "Entrega": "entrega",
+      };
+      const formaPagamentoMap: Record<string, string> = {
+        "Pix": "pix",
+        "Dinheiro": "dinheiro",
+        "Cartão de Crédito": "cartao_credito",
+        "Cartão de Débito": "cartao_debito",
+      };
+
       const response = await criarPedido({
         itens: [
           {
@@ -71,10 +82,10 @@ export const FormularioBolo = () => {
         ],
         cliente: {
           nomeCompleto: nomeCompleto.trim(),
-          contato: contato.trim(),
+          contato: contato.replace(/\D/g, ""),
           endereco: endereco.trim(),
-          formaEntrega: formaEntrega as "retirada" | "entrega",
-          formaPagamento: formaPagamento as "pix" | "dinheiro" | "cartao_credito" | "cartao_debito",
+          formaEntrega: (formaEntregaMap[formaEntrega] || formaEntrega) as "retirada" | "entrega",
+          formaPagamento: (formaPagamentoMap[formaPagamento] || formaPagamento) as "pix" | "dinheiro" | "cartao_credito" | "cartao_debito",
           dataEntrega,
           observacoes: observacoes.trim() || undefined,
         },
