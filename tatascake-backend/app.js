@@ -14,9 +14,11 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+console.log('📡 Registrando rotas...');
+
 app.get('/', (req, res) => {
   res.json({ 
-    message: 'API de Pedidos de Doces - Ativa! 🍰',
+    message: 'API de Pedidos de Doces - Ativa!',
     endpoints: {
       clientes: '/api/clientes',
       pedidos: '/api/pedidos'
@@ -24,9 +26,19 @@ app.get('/', (req, res) => {
   });
 });
 
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
 app.use('/api/pedidos', pedidoRoutes);
 app.use('/api/clientes', clienteRoutes);
 
+app.use((req, res) => {
+  res.status(404).json({ error: 'Rota nao encontrada', path: req.originalUrl, method: req.method });
+});
+
 app.use(errorHandler);
+
+console.log('✅ Rotas registradas com sucesso');
 
 export default app;
