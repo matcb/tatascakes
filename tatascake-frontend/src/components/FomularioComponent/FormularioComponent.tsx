@@ -124,8 +124,8 @@ export const FormularioBolo = () => {
       <div className="bg-softpink-bg grid place-items-center w-full min-h-screen p-4">
         
         <div className="flex flex-col items-center mb-8">
-          <Link to="/">
-            <img src={logo} alt="Logo Tatas Cake" className="w-24 h-24 sm:w-32 sm:h-32 md:w-50 md:h-50 lg:w-75 lg:h-75" />
+          <Link to="/" className="block mx-auto">
+            <img src={logo} alt="Logo Tatas Cake" className="w-24 h-24 sm:w-32 sm:h-32 md:w-50 md:h-50 lg:w-75 lg:h-75 object-contain mx-auto" />
             <p className="font-accent text-red-font -mt-4 sm:-mt-6 md:-mt-10 lg:-mt-16 text-[1rem] sm:text-[1.2rem] text-center">
               Confeitaria Artesanal - by R.Cakes
             </p>
