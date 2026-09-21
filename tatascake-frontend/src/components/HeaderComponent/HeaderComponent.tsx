@@ -34,6 +34,7 @@ const HeaderComponent = () => {
                 <div className="md:hidden">
                     
                     <div className="flex items-center justify-between">
+
                          <Link to="/" className="flex items-center justify-center">
                             <img src={logo} alt="Logo" className="w-auto h-12 sm:h-14 md:h-16 max-w-64" />
                          </Link>
@@ -49,8 +50,8 @@ const HeaderComponent = () => {
 
                                 <Link onClick={toggleMenu} className="text-red-font font-logo block text-foreground hover:text-red-font/80 transition-all duration-300 font-medium text-base sm:text-lg border-b-2 border-transparent hover:border-red-font/60 px-2 py-1" to="/contato">Contato</Link>
                                 <Link onClick={toggleMenu} className="text-red-font font-logo block text-foreground hover:text-red-font/80 transition-all duration-300 font-medium text-base sm:text-lg border-b-2 border-transparent hover:border-red-font/60 px-2 py-1" to="/sobre">Sobre</Link>
-                                <Link onClick={toggleMenu} className="text-red-font font-logo block text-foreground hover:text-red-font/80 transition-all duration-300 font-medium text-base sm:text-lg border-b-2 border-transparent hover:border-red-font/60 px-2 py-1" to="/pedido">Fazer Pedido</Link>
-                                <Link onClick={toggleMenu} className="text-red-font font-logo block text-foreground hover:text-red-font/80 transition-all duration-300 font-medium text-base sm:text-lg border-b-2 border-transparent hover:border-red-font/60 px-2 py-1" to="/produto">Nossos Produtos</Link>
+                                <Link onClick={toggleMenu} className="text-red-font font-logo block text-foreground hover:text-red-font/80 transition-all duration-300 font-medium text-base sm:text-lg border-b-2 border-transparent hover:border-red-font/60 px-2 py-1" to="/formulario">Fazer Pedido</Link>
+                                <Link onClick={toggleMenu} className="text-red-font font-logo block text-foreground hover:text-red-font/80 transition-all duration-300 font-medium text-base sm:text-lg border-b-2 border-transparent hover:border-red-font/60 px-2 py-1" to="/produtos">Nossos Produtos</Link>
                         </div>
 
                     )}
