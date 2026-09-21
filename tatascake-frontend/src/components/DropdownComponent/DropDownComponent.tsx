@@ -14,21 +14,25 @@ export const Dropdown = ({options, placeholder, onSelect, label}: DropdownProps)
     const dropdownRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
+        const handleClickOutside = (event: MouseEvent | TouchEvent) => {
             if(dropdownRef.current && !dropdownRef.current.contains(event.target as Node))
             {
                 setIsOpen(false)
             }}
 
         document.addEventListener('mousedown', handleClickOutside)
-        return () => document.removeEventListener('mousedown', handleClickOutside)
+        document.addEventListener('touchstart', handleClickOutside)
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside)
+            document.removeEventListener('touchstart', handleClickOutside)
+        }
 
     }, [])
 
     const handleSelect = (option:string) => {
-        setSelected(option),
-        onSelect(option),
-        setIsOpen(false)
+        setSelected(option);
+        onSelect(option);
+        setIsOpen(false);
     }
 
     return (
@@ -36,7 +40,7 @@ export const Dropdown = ({options, placeholder, onSelect, label}: DropdownProps)
 
             {label && <label className='block mb-2 text-sm font-medium'>{label}</label>}
 
-            <button type="button"onClick = {() => setIsOpen(!isOpen)} className="w-110 bg-red-font border-gray-300 rounded-[15px] px-4 py-2 text-left flex items-center justify-between hover:border-gray-400 cursor-pointer">
+            <button type="button" onClick={() => setIsOpen(!isOpen)} className="w-full bg-red-font border-gray-300 rounded-[15px] px-4 py-3 text-left flex items-center justify-between hover:border-gray-400 cursor-pointer min-h-[44px]">
 
                   <span className={selected ? 'text-red-200' : 'text-red-200'}>
                      {selected || placeholder}
