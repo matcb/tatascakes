@@ -121,7 +121,7 @@ export const FormularioBolo = () => {
 
   return (
     <>
-      <div className="bg-softpink-bg grid place-items-center min-h-screen p-4">
+      <div className="bg-softpink-bg grid place-items-center w-full min-h-screen p-4">
         <div className="flex flex-col items-center mb-8">
           <Link to="/">
             <img src={logo} alt="Logo Tatas Cake" className="w-75 h-75" />
