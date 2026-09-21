@@ -118,7 +118,7 @@ const ContactComponent = () => {
                                 Localização
                             </h3>
                             <p className="text-gray-700 font-body">
-                                São Paulo, SP<br/>
+                                São João de Meriti, RJ<br/>
                                 Entrega em toda região<br/>
                                 Consulte taxas
                             </p>
