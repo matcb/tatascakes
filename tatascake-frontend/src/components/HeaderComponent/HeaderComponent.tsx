@@ -15,8 +15,8 @@ const HeaderComponent = () => {
 
                    {/*left links*/}
                     <div className="flex items-center gap-8 pl-25">
-                        <Link className="text-red-font font-logo text-foreground hover:text-red-font/80 transition-all duration-300 font-medium text-sm md:text-base lg:text-lg border-b-2 border-transparent hover:border-red-font/60 px-2 py-1" to="/contato">Contato</Link>
-                        <Link className="text-red-font font-logo text-foreground hover:text-red-font/80 transition-all duration-300 font-medium text-sm md:text-base lg:text-lg border-b-2 border-transparent hover:border-red-font/60 px-2 py-1" to="/sobre">Sobre</Link>
+                        <a href="#contato" className="text-red-font font-logo text-foreground hover:text-red-font/80 transition-all duration-300 font-medium text-sm md:text-base lg:text-lg border-b-2 border-transparent hover:border-red-font/60 px-2 py-1">Contato</a>
+                        <a href="#sobre" className="text-red-font font-logo text-foreground hover:text-red-font/80 transition-all duration-300 font-medium text-sm md:text-base lg:text-lg border-b-2 border-transparent hover:border-red-font/60 px-2 py-1">Sobre</a>
                     </div>
 
                     {/*center logo*/}
@@ -27,7 +27,7 @@ const HeaderComponent = () => {
                     {/*right links*/}
                     <div className="flex items-center gap-8 pr-25">
                         <Link className="text-red-font font-logo text-foreground hover:text-red-font/80 transition-all duration-300 font-medium text-sm md:text-base lg:text-lg border-b-2 border-transparent hover:border-red-font/60 px-2 py-1" to="/formulario">Fazer Pedido</Link>
-                        <Link className="text-red-font font-logo text-foreground hover:text-red-font/80 transition-all duration-300 font-medium text-sm md:text-base lg:text-lg border-b-2 border-transparent hover:border-red-font/60 px-2 py-1" to="/produtos">Nossos Produtos</Link>
+                        <a href="#produtos" className="text-red-font font-logo text-foreground hover:text-red-font/80 transition-all duration-300 font-medium text-sm md:text-base lg:text-lg border-b-2 border-transparent hover:border-red-font/60 px-2 py-1">Nossos Produtos</a>
                     </div>
              </nav>
                 {/*Mobile Navigation*/}
@@ -48,8 +48,8 @@ const HeaderComponent = () => {
                     {isMenuOpen && (
                         <div className="mt-4 pb-4 space-y-4 border-t border-border pt-4">
 
-                                <a href="#contato" className="text-red-font font-logo block text-foreground hover:text-red-font/80 transition-all duration-300 font-medium text-base sm:text-lg border-b-2 border-transparent hover:border-red-font/60 px-2 py-1">Contato</a>
-                                <a href="#sobre" className="text-red-font font-logo block text-foreground hover:text-red-font/80 transition-all duration-300 font-medium text-base sm:text-lg border-b-2 border-transparent hover:border-red-font/60 px-2 py-1">Sobre</a>
+                                <a href="#contato" onClick={toggleMenu} className="text-red-font font-logo block text-foreground hover:text-red-font/80 transition-all duration-300 font-medium text-base sm:text-lg border-b-2 border-transparent hover:border-red-font/60 px-2 py-1">Contato</a>
+                                <a href="#sobre" onClick={toggleMenu} className="text-red-font font-logo block text-foreground hover:text-red-font/80 transition-all duration-300 font-medium text-base sm:text-lg border-b-2 border-transparent hover:border-red-font/60 px-2 py-1">Sobre</a>
                                 <Link onClick={toggleMenu} className="text-red-font font-logo block text-foreground hover:text-red-font/80 transition-all duration-300 font-medium text-base sm:text-lg border-b-2 border-transparent hover:border-red-font/60 px-2 py-1" to="/formulario">Fazer Pedido</Link>
                                 <Link onClick={toggleMenu} className="text-red-font font-logo block text-foreground hover:text-red-font/80 transition-all duration-300 font-medium text-base sm:text-lg border-b-2 border-transparent hover:border-red-font/60 px-2 py-1" to="/produtos">Nossos Produtos</Link>
                         </div>
