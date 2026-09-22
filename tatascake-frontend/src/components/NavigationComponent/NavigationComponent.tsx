@@ -2,17 +2,17 @@ import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 
 const NavigationComponent = () => {
-    const [activeSection, setActiveSection] = useState('about');
+    const [activeSection, setActiveSection] = useState('sobre');
     
     const sections = [
-        { id: 'about', label: 'Sobre', icon: '🏠' },
+        { id: 'sobre', label: 'Sobre', icon: '🏠' },
         { id: 'produtos', label: 'Produtos', icon: '🎂' },
         { id: 'contato', label: 'Contato', icon: '📞' }
     ];
 
     useEffect(() => {
         const handleScroll = () => {
-            const sections = ['about', 'produtos', 'contato'];
+            const sections = ['sobre', 'produtos', 'contato'];
             const scrollPosition = window.scrollY + window.innerHeight / 2;
 
             for (const section of sections) {
