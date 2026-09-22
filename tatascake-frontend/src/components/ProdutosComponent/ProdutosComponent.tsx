@@ -55,7 +55,7 @@ const ProdutosComponent = () => {
     return (
         <motion.section 
             id="produtos"
-            className="min-h-screen bg-gradient-to-br from-red-font/5 via-softpink-bg/40 to-white flex items-center justify-center px-4"
+            className="min-h-screen bg-gradient-to-br from-red-font/5 via-softpink-bg/40 to-white flex items-center justify-center px-4 scroll-mt-16"
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}

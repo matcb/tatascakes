@@ -4,7 +4,7 @@ const ContactComponent = () => {
     return (
         <motion.section 
             id="contato"
-            className="min-h-screen bg-gradient-to-br from-softpink-bg/60 via-red-font/10 to-white flex items-center justify-center px-4"
+            className="min-h-screen bg-gradient-to-br from-softpink-bg/60 via-red-font/10 to-white flex items-center justify-center px-4 scroll-mt-16"
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
