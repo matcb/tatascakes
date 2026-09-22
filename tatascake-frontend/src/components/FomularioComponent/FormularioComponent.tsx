@@ -121,7 +121,7 @@ export const FormularioBolo = () => {
 
   return (
     <>
-      <div className="bg-softpink-bg grid place-items-center w-full min-h-screen p-4">
+      <div className="bg-gradient-to-br from-softpink-bg via-softpink-bg/60 to-red-font/10 grid place-items-center w-full min-h-screen p-4">
         
         <div className="flex flex-col items-center mb-8">
           <Link to="/" className="block mx-auto">
