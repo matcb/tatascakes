@@ -1,0 +1,228 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" font-family="'Segoe UI', Arial, sans-serif">
+  <defs>
+    <filter id="shadow" x="-3%" y="-3%" width="106%" height="106%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.15"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#666"/>
+    </marker>
+    <marker id="arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#CB102B"/>
+    </marker>
+    <linearGradient id="headerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#CB102B;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#a00d22;stop-opacity:1"/>
+    </linearGradient>
+    <linearGradient id="routerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#2563eb;stop-opacity:1"/>
+    </linearGradient>
+    <linearGradient id="pageGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#10b981;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#059669;stop-opacity:1"/>
+    </linearGradient>
+    <linearGradient id="compGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#f59e0b;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#d97706;stop-opacity:1"/>
+    </linearGradient>
+    <linearGradient id="uiGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#7c3aed;stop-opacity:1"/>
+    </linearGradient>
+    <linearGradient id="serviceGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#ec4899;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#db2777;stop-opacity:1"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="900" fill="#fafafa" rx="12"/>
+
+  <!-- Title -->
+  <text x="600" y="45" text-anchor="middle" font-size="22" font-weight="bold" fill="#1f2937">Tata's Cakes — React Architecture Diagram</text>
+  <text x="600" y="68" text-anchor="middle" font-size="13" fill="#6b7280">How components, routes, pages, and services connect</text>
+
+  <!-- ========== LAYER 1: ENTRY POINT ========== -->
+  <text x="600" y="100" text-anchor="middle" font-size="11" font-weight="600" fill="#9ca3af" letter-spacing="2">ENTRY POINT</text>
+
+  <rect x="430" y="110" width="130" height="44" rx="8" fill="url(#headerGrad)" filter="url(#shadow)"/>
+  <text x="495" y="137" text-anchor="middle" font-size="13" font-weight="600" fill="white">index.html</text>
+
+  <text x="560" y="137" font-size="18" fill="#666">→</text>
+
+  <rect x="580" y="110" width="100" height="44" rx="8" fill="url(#headerGrad)" filter="url(#shadow)"/>
+  <text x="630" y="137" text-anchor="middle" font-size="13" font-weight="600" fill="white">main.tsx</text>
+
+  <text x="680" y="137" font-size="18" fill="#666">→</text>
+
+  <rect x="700" y="110" width="80" height="44" rx="8" fill="url(#headerGrad)" filter="url(#shadow)"/>
+  <text x="740" y="137" text-anchor="middle" font-size="13" font-weight="600" fill="white">App.tsx</text>
+
+  <!-- main.tsx renders BrowserRouter -->
+  <text x="630" y="168" text-anchor="middle" font-size="10" fill="#6b7280">wraps &lt;BrowserRouter&gt;</text>
+
+  <!-- ========== LAYER 2: ROUTER ========== -->
+  <text x="600" y="200" text-anchor="middle" font-size="11" font-weight="600" fill="#9ca3af" letter-spacing="2">ROUTER</text>
+
+  <rect x="470" y="210" width="260" height="50" rx="8" fill="url(#routerGrad)" filter="url(#shadow)"/>
+  <text x="600" y="240" text-anchor="middle" font-size="14" font-weight="600" fill="white">router.tsx — &lt;Routes&gt;</text>
+
+  <!-- Arrow from App to Router -->
+  <line x1="740" y1="154" x2="660" y2="210" stroke="#666" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Route labels -->
+  <rect x="250" y="280" width="200" height="36" rx="6" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="350" y="303" text-anchor="middle" font-size="12" font-weight="600" fill="#2563eb">Route: "/"</text>
+
+  <rect x="750" y="280" width="260" height="36" rx="6" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="880" y="303" text-anchor="middle" font-size="12" font-weight="600" fill="#2563eb">Route: "/formulario"</text>
+
+  <!-- Arrows from Router to Routes -->
+  <line x1="540" y1="260" x2="380" y2="280" stroke="#3b82f6" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="660" y1="260" x2="850" y2="280" stroke="#3b82f6" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- ========== LAYER 3: PAGES ========== -->
+  <text x="600" y="340" text-anchor="middle" font-size="11" font-weight="600" fill="#9ca3af" letter-spacing="2">PAGES</text>
+
+  <!-- Home Page -->
+  <rect x="200" y="355" width="300" height="50" rx="8" fill="url(#pageGrad)" filter="url(#shadow)"/>
+  <text x="350" y="385" text-anchor="middle" font-size="14" font-weight="600" fill="white">Home Page — pages/Home/index.tsx</text>
+
+  <!-- Formulario Page -->
+  <rect x="700" y="355" width="280" height="50" rx="8" fill="url(#pageGrad)" filter="url(#shadow)"/>
+  <text x="840" y="385" text-anchor="middle" font-size="14" font-weight="600" fill="white">Formulario Page — pages/Formulario/index.tsx</text>
+
+  <!-- Arrow from Routes to Pages -->
+  <line x1="350" y1="316" x2="350" y2="355" stroke="#10b981" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="880" y1="316" x2="840" y2="355" stroke="#10b981" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- ========== LAYER 4: COMPONENTS ========== -->
+  <text x="600" y="435" text-anchor="middle" font-size="11" font-weight="600" fill="#9ca3af" letter-spacing="2">COMPONENTS</text>
+
+  <!-- Home Components -->
+  <rect x="30" y="455" width="130" height="36" rx="6" fill="url(#compGrad)" filter="url(#shadow)"/>
+  <text x="95" y="478" text-anchor="middle" font-size="11" font-weight="600" fill="white">HeaderComponent</text>
+
+  <rect x="175" y="455" width="140" height="36" rx="6" fill="url(#compGrad)" filter="url(#shadow)"/>
+  <text x="245" y="478" text-anchor="middle" font-size="11" font-weight="600" fill="white">AboutComponent</text>
+
+  <rect x="330" y="455" width="150" height="36" rx="6" fill="url(#compGrad)" filter="url(#shadow)"/>
+  <text x="405" y="478" text-anchor="middle" font-size="11" font-weight="600" fill="white">ProdutosComponent</text>
+
+  <rect x="495" y="455" width="150" height="36" rx="6" fill="url(#compGrad)" filter="url(#shadow)"/>
+  <text x="570" y="478" text-anchor="middle" font-size="11" font-weight="600" fill="white">ContactComponent</text>
+
+  <rect x="30" y="500" width="150" height="36" rx="6" fill="url(#compGrad)" filter="url(#shadow)"/>
+  <text x="105" y="523" text-anchor="middle" font-size="11" font-weight="600" fill="white">NavigationComponent</text>
+
+  <rect x="195" y="500" width="140" height="36" rx="6" fill="url(#compGrad)" filter="url(#shadow)"/>
+  <text x="265" y="523" text-anchor="middle" font-size="11" font-weight="600" fill="white">ProgressComponent</text>
+
+  <rect x="350" y="500" width="130" height="36" rx="6" fill="url(#compGrad)" filter="url(#shadow)"/>
+  <text x="415" y="523" text-anchor="middle" font-size="11" font-weight="600" fill="white">FooterComponent</text>
+
+  <!-- Formulario Components -->
+  <rect x="700" y="455" width="190" height="36" rx="6" fill="url(#compGrad)" filter="url(#shadow)"/>
+  <text x="795" y="478" text-anchor="middle" font-size="11" font-weight="600" fill="white">FormularioBolo</text>
+
+  <rect x="910" y="455" width="170" height="36" rx="6" fill="url(#compGrad)" filter="url(#shadow)"/>
+  <text x="995" y="478" text-anchor="middle" font-size="11" font-weight="600" fill="white">DropdownComponent</text>
+
+  <rect x="700" y="500" width="120" height="36" rx="6" fill="url(#compGrad)" filter="url(#shadow)"/>
+  <text x="760" y="523" text-anchor="middle" font-size="11" font-weight="600" fill="white">Link (nav)</text>
+
+  <!-- Arrows from Pages to Components -->
+  <line x1="350" y1="405" x2="95" y2="455" stroke="#f59e0b" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <line x1="350" y1="405" x2="245" y2="455" stroke="#f59e0b" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <line x1="350" y1="405" x2="405" y2="455" stroke="#f59e0b" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <line x1="350" y1="405" x2="570" y2="455" stroke="#f59e0b" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <line x1="350" y1="405" x2="105" y2="500" stroke="#f59e0b" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <line x1="350" y1="405" x2="265" y2="500" stroke="#f59e0b" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <line x1="350" y1="405" x2="415" y2="500" stroke="#f59e0b" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+  <line x1="840" y1="405" x2="795" y2="455" stroke="#f59e0b" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+  <!-- ========== LAYER 5: SHARED UI ========== -->
+  <text x="600" y="570" text-anchor="middle" font-size="11" font-weight="600" fill="#9ca3af" letter-spacing="2">SHARED UI COMPONENTS (components/ui)</text>
+
+  <rect x="180" y="590" width="100" height="36" rx="6" fill="url(#uiGrad)" filter="url(#shadow)"/>
+  <text x="230" y="613" text-anchor="middle" font-size="11" font-weight="600" fill="white">button.tsx</text>
+
+  <rect x="300" y="590" width="100" height="36" rx="6" fill="url(#uiGrad)" filter="url(#shadow)"/>
+  <text x="350" y="613" text-anchor="middle" font-size="11" font-weight="600" fill="white">input.tsx</text>
+
+  <rect x="420" y="590" width="100" height="36" rx="6" fill="url(#uiGrad)" filter="url(#shadow)"/>
+  <text x="470" y="613" text-anchor="middle" font-size="11" font-weight="600" fill="white">field.tsx</text>
+
+  <rect x="540" y="590" width="100" height="36" rx="6" fill="url(#uiGrad)" filter="url(#shadow)"/>
+  <text x="590" y="613" text-anchor="middle" font-size="11" font-weight="600" fill="white">label.tsx</text>
+
+  <rect x="660" y="590" width="110" height="36" rx="6" fill="url(#uiGrad)" filter="url(#shadow)"/>
+  <text x="715" y="613" text-anchor="middle" font-size="11" font-weight="600" fill="white">separator.tsx</text>
+
+  <!-- Arrow from Components to UI -->
+  <line x1="795" y1="491" x2="470" y2="590" stroke="#8b5cf6" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <text x="620" y="545" font-size="9" fill="#8b5cf6" transform="rotate(-20,620,545)">imported by</text>
+
+  <!-- ========== LAYER 6: SERVICES ========== -->
+  <text x="600" y="665" text-anchor="middle" font-size="11" font-weight="600" fill="#9ca3af" letter-spacing="2">SERVICES</text>
+
+  <rect x="420" y="680" width="190" height="44" rx="8" fill="url(#serviceGrad)" filter="url(#shadow)"/>
+  <text x="515" y="707" text-anchor="middle" font-size="13" font-weight="600" fill="white">services/api.ts</text>
+
+  <!-- Arrow from FormularioBolo to API -->
+  <line x1="795" y1="491" x2="560" y2="680" stroke="#ec4899" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <text x="720" y="610" font-size="9" fill="#ec4899" transform="rotate(-40,720,610)">criarPedido()</text>
+
+  <!-- ========== LAYER 7: EXTERNAL ========== -->
+  <text x="600" y="755" text-anchor="middle" font-size="11" font-weight="600" fill="#9ca3af" letter-spacing="2">EXTERNAL</text>
+
+  <rect x="350" y="770" width="140" height="44" rx="8" fill="#374151" filter="url(#shadow)"/>
+  <text x="420" y="797" text-anchor="middle" font-size="13" font-weight="600" fill="white">Backend API</text>
+  <text x="420" y="811" text-anchor="middle" font-size="9" fill="#9ca3af">POST /api/pedidos</text>
+
+  <rect x="530" y="770" width="140" height="44" rx="8" fill="#374151" filter="url(#shadow)"/>
+  <text x="600" y="797" text-anchor="middle" font-size="13" font-weight="600" fill="white">WhatsApp API</text>
+  <text x="600" y="811" text-anchor="middle" font-size="9" fill="#9ca3af">window.open()</text>
+
+  <rect x="710" y="770" width="140" height="44" rx="8" fill="#374151" filter="url(#shadow)"/>
+  <text x="780" y="797" text-anchor="middle" font-size="13" font-weight="600" fill="white">Netlify CDN</text>
+  <text x="780" y="811" text-anchor="middle" font-size="9" fill="#9ca3af">SPA redirect</text>
+
+  <!-- Arrow from API to External -->
+  <line x1="515" y1="724" x2="420" y2="770" stroke="#666" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <line x1="515" y1="724" x2="600" y2="770" stroke="#666" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <line x1="740" y1="154" x2="780" y2="770" stroke="#666" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <text x="800" y="460" font-size="9" fill="#9ca3af" transform="rotate(90,800,460)">deployed to</text>
+
+  <!-- ========== LEGEND ========== -->
+  <rect x="30" y="830" width="1140" height="55" rx="8" fill="white" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="50" y="852" font-size="11" font-weight="600" fill="#374151">Legend:</text>
+
+  <rect x="130" y="840" width="16" height="16" rx="3" fill="#CB102B"/>
+  <text x="152" y="853" font-size="10" fill="#374151">Entry/Config</text>
+
+  <rect x="250" y="840" width="16" height="16" rx="3" fill="#3b82f6"/>
+  <text x="272" y="853" font-size="10" fill="#374151">Router</text>
+
+  <rect x="340" y="840" width="16" height="16" rx="3" fill="#10b981"/>
+  <text x="362" y="853" font-size="10" fill="#374151">Pages</text>
+
+  <rect x="420" y="840" width="16" height="16" rx="3" fill="#f59e0b"/>
+  <text x="442" y="853" font-size="10" fill="#374151">Components</text>
+
+  <rect x="530" y="840" width="16" height="16" rx="3" fill="#8b5cf6"/>
+  <text x="552" y="853" font-size="10" fill="#374151">Shared UI</text>
+
+  <rect x="630" y="840" width="16" height="16" rx="3" fill="#ec4899"/>
+  <text x="652" y="853" font-size="10" fill="#374151">Services</text>
+
+  <rect x="730" y="840" width="16" height="16" rx="3" fill="#374151"/>
+  <text x="752" y="853" font-size="10" fill="#374151">External</text>
+
+  <line x1="850" y1="848" x2="880" y2="848" stroke="#666" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="890" y="853" font-size="10" fill="#374151">Direct flow</text>
+
+  <line x1="980" y1="848" x2="1010" y2="848" stroke="#666" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="1020" y="853" font-size="10" fill="#374151">Import / dependency</text>
+</svg>
